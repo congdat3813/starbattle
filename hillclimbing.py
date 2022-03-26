@@ -62,18 +62,21 @@ def getstate(starlist: list[star]):
 
 def getnextstate(starlist: list[star],curstate):
     startstarlist= starlist.copy()
-    n=getstarmax(startstarlist)
-    starArea=startstarlist[n].starArea
+    a=starlist.copy()
     nextstate=curstate
-    nextstarlist= starlist.copy()
+    nextstarlist= startstarlist.copy()
+    n=getstarmax(nextstarlist.copy())
+    starArea=nextstarlist[n].starArea
     for x in arealist[starArea]:
         nextstarlist[n].place=x
         state=getstate(nextstarlist)
         if state < nextstate:
             nextstate = state
-            starlist[n].place=x
-            print("a=",starlist[n].place)
-        print(starlist[n].place)
+            a = nextstarlist.copy()
+            # print("a=",startstarlist[n].place)
+        else:
+            nextstarlist=a.copy()
+        print(a[n].place)
     if nextstate < curstate:
         curstate=nextstate
         print(curstate)
@@ -82,7 +85,7 @@ def getnextstate(starlist: list[star],curstate):
         print([starlist[i].place for i in range(5)])
     return curstate
 def hillclimbing(starlist: list[star]):
-    curstate= getstate(starlist)
+    curstate= getstate(starlist.copy())
     while curstate != 0:
         print(curstate)
         print([starlist[i].place for i in range(5)])
@@ -90,13 +93,13 @@ def hillclimbing(starlist: list[star]):
     print(curstate)
     print([starlist[i].place for i in range(5)])
     return starlist
-starlist=[]
-starlist.append(star([0,1]))
-starlist.append(star([1,0]))
-starlist.append(star([2,2]))
-starlist.append(star([4,3]))
-starlist.append(star([1,4]))
 def solver():
+    starlist=[]
+    starlist.append(star([0,1]))
+    starlist.append(star([1,0]))
+    starlist.append(star([2,2]))
+    starlist.append(star([4,3]))
+    starlist.append(star([1,4]))
     starlist=hillclimbing(starlist)
     for i in range(5):
         print(starlist[i].place,starlist[i].starArea,starlist[i].score)

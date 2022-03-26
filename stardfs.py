@@ -1,13 +1,13 @@
-from tkinter import *
-from tkinter import messagebox,ttk
-import tkinter as tk
+# from tkinter import *
+# from tkinter import messagebox,ttk
+# import tkinter as tk
 
-win = Tk()
-win.title("The Knight's Tour")
-win.geometry("900x900")
-win.resizable(height=False,width=False)
-win.configure(bg='#e17055')
-canvas = Canvas(win, width=800, height=800,bg='#e17055',highlightbackground='#e17055')
+# win = Tk()
+# win.title("The Knight's Tour")
+# win.geometry("900x900")
+# win.resizable(height=False,width=False)
+# win.configure(bg='#e17055')
+# canvas = Canvas(win, width=800, height=800,bg='#e17055',highlightbackground='#e17055')
 
 path=[0,0,0,0,0]
 place=[0,0]
@@ -78,7 +78,7 @@ def dfssolve(rows):
             path[row]=col
             boardstar[row][col]=1
             if row == 4:
-                pathlist.append([path[x] for x in range(5)])
+                pathlist.append(path.copy())
             else:
                 dfssolve(row+1)
             boardstar[row][col]=0
