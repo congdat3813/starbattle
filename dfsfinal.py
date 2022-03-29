@@ -2,6 +2,7 @@ from itertools import count
 from random import shuffle
 from time import time
 import random
+import tracemalloc
 class DFSChess:
     def __init__(self,n,boardArea):
         self.boardArea = boardArea
@@ -70,7 +71,7 @@ class DFSChess:
                 # thuc hien swap lai
                 state=self.state.copy()
 # thuc hien DFS voi stack               
-    def dfssolve(self):
+    def solve(self):
         # Neu stack khong rong thi thuc hien tim kiem
         while self.stackchild!=[]:
             self.count+=1
@@ -91,7 +92,7 @@ class DFSChess:
         # Neu stack rong thi tra ve ket qua
         return self.solutions       
 # Giai quyet bai toan               
-    def reportDFSSolverTime(self):
+    def reportdfsSolverTime(self):
         self.state=list(range(self.size))
         shuffle(self.state)
         self.historystate.append(self.state)
@@ -105,11 +106,14 @@ class DFSChess:
         self.historystate.append(self.state.copy())
         self.stackchild=self.stackchild[1:]
         start = time()
-        a=self.dfssolve()
+        tracemalloc.start()
+        a=self.solve()
+        current, peak = tracemalloc.get_traced_memory()
         end = time()
-        file= open("DFSreport.txt","a")
-        file.write(str(end-start)+"\t" +str(self.count)+"\n")
+        file= open("dfsreport.txt","a")
+        file.write(str(end-start)+ "\t"+ str(self.count)+ "\t"+ str(current/10**6)+"MB"+"\t"+str(peak/10**6)+"MB"+"\n")
         file.close()
+        tracemalloc.stop()
         return a   
     
     def checkrowdif(self,row):
@@ -120,7 +124,7 @@ class DFSChess:
         return False
 # xuat ra bang ket qua   
     def write_to_file(self):
-        result = open("kq.txt", "w")
+        result = open("kqdfs.txt", "w")
         board=self.createBoard(self.size)
         self.setBoard(board,self.state)
         s=""
@@ -161,10 +165,9 @@ class DFSChess:
         result.close()
     
         
-from testcase5 import *
-from testcase6 import *
-from testcase8 import *
-import random  
+# from testcase5 import *
+# from testcase6 import *
+# from testcase8 import *
               
 # dimension = int(input("Enter board dimension: "))
 
@@ -229,7 +232,7 @@ import random
 #     chess = DFSChess(8,boardA)
 #     solution = chess.reportDFSSolverTime()
 
-boardA=board5list[1]
-chess = DFSChess(5,boardA)
-solution = chess.reportDFSSolverTime()
-chess.write_to_file()
+# boardA=board5list[1]
+# chess = DFSChess(5,boardA)
+# solution = chess.reportDFSSolverTime()
+# chess.write_to_file()

@@ -17,26 +17,37 @@ import random
 '''Single GA solution ---------------------------------'''
 dimension = int(input("Enter board dimension: "))
 if dimension == 5:
-       boardA=random.choice(board5list)
+       count=0
+       for i in range(101):
+           boardA=random.choice(board5list)
+           chess = GeneticChess(dimension,boardA,1)
+           solution = chess.reportGASolverTime()
+           if solution != []:
+              count+=1
+              print(count,solution)
+       print(count)
 elif dimension == 6:
-       boardA=random.choice(board6list)
+       count=0
+       for i in range(20):
+           boardA=random.choice(board6list)
+           chess = GeneticChess(dimension,boardA,2)
+           solution = chess.reportGASolverTime()
+           if solution != []:
+              count+=1
+              print(count,solution)
+       print(count)
 elif dimension == 8:
-       boardA=random.choice(board8list)
-print(boardA)
-chess = GeneticChess(dimension,boardA)
-from time import time
-start = time()
-solution = chess.reportGASolverTime()
-end =time()
-board = chess.createBoard(chess.size)
-chess.setBoard(board,solution)
-print("Solution:")
-print(solution)
-# print("\nBoard:")
-# for row in board:
-#     print(row)
-print(end - start)
-# chess.showBoardGui(board)
+       count=0
+       for i in range(20):
+           boardA=random.choice(board8list)
+           chess = GeneticChess(dimension,boardA,15)
+           solution = chess.reportGASolverTime()
+           if solution != []:
+              count+=1
+              print(count,solution)
+       print(count)
+# board = chess.createBoard(chess.size)
+# chess.setBoard(board,solution)
 
 
 

@@ -1,8 +1,7 @@
 from random import shuffle
 import random
-from testcase5 import *
-from testcase6 import *
-from testcase8 import *
+
+import tracemalloc
 
 class BestChess:
     def __init__(self,n,boardArea):
@@ -90,7 +89,7 @@ class BestChess:
         return False
     # Xuat ket qua
     def write_to_file(self):
-        result = open("kq.txt", "w")
+        result = open("kqbest.txt", "w")
         board=self.createBoard(self.size)
         self.setBoard(board,self.state)
         s=""
@@ -133,11 +132,14 @@ class BestChess:
     def reportbestfsSolverTime(self):
         from time import time
         start = time()
+        tracemalloc.start()
         a=self.solve()
+        current, peak = tracemalloc.get_traced_memory()
         end = time()
         file= open("bestreport.txt","a")
-        file.write(str(end-start)+ "\t"+ str(self.count)+"\n")
+        file.write(str(end-start)+ "\t"+ str(self.count)+ "\t"+ str(current/10**6)+"MB"+"\t"+str(peak/10**6)+"MB"+"\n")
         file.close()
+        tracemalloc.stop()
         return a 
     
 # dimension = int(input("Enter board dimension: "))
@@ -172,7 +174,7 @@ class BestChess:
 #     chess = BestChess(8,boardA)
 #     solution = chess.reportbestfsSolverTime()
 
-boardA=board6list[1]
-chess = BestChess(6,boardA)
-solution = chess.reportbestfsSolverTime()
-chess.write_to_file()
+# boardA=board6list[1]
+# chess = BestChess(6,boardA)
+# solution = chess.reportbestfsSolverTime()
+# chess.write_to_file()
