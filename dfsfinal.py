@@ -4,11 +4,11 @@ from time import time
 import random
 import tracemalloc
 class DFSChess:
-    def __init__(self,n,boardArea):
+    def __init__(self,n,boardArea,state):
         self.boardArea = boardArea
         self.solutions = []
         self.size = n
-        self.state=[]
+        self.state=state
         self.historystate = []
         self.childstate = []
         self.stackchild=[]
@@ -21,10 +21,7 @@ class DFSChess:
     def setBoard(self,board,state):
         for i in range(self.size):
             board[i][state[i]] = 1
-    # random state ban dau        
-    def randomInit(self):
-        self.state= list(range(self.size))
-        shuffle(self.state)
+      
 # Kiem tra so vi tri vi pham
     def point(self,state):
         # Tao board moi
@@ -40,9 +37,11 @@ class DFSChess:
                 if self.boardArea[row][col] == self.boardArea[i][j] and row!=i :
                     hits += 1
             # Neu vi tri hien tai cung cot voi vi tri khac thi tang so vi pham len 1
-            for i in range(row-1,-1,-1):
-                if board[i][col] == 1:
-                    hits+=1
+            # for i in range(row-1,-1,-1):
+            #     if board[i][col] == 1:
+            #         hits+=1
+            
+            
             # Neu vi tri hien tai co hang xom voi vi tri khac thi tang so vi pham len 1
             if  row>0 and col>0 and board[row-1][col-1] == 1:
                 hits+=1
@@ -93,8 +92,6 @@ class DFSChess:
         return self.solutions       
 # Giai quyet bai toan               
     def reportdfsSolverTime(self):
-        self.state=list(range(self.size))
-        shuffle(self.state)
         self.historystate.append(self.state)
         self.count+=1
         if self.isSolution():
@@ -163,6 +160,7 @@ class DFSChess:
             s+="__"
         result.write(s)
         result.close()
+        print("Ket qua DFS: \n",s)
     
         
 # from testcase5 import *

@@ -4,12 +4,12 @@ import random
 import tracemalloc
 
 class BestChess:
-    def __init__(self,n,boardArea):
+    def __init__(self,n,boardArea,state):
         self.board = self.createBoard(n)
         self.boardArea = boardArea
         self.solutions = []
         self.size = n
-        self.state=[]
+        self.state= state
         self.historystate = []
         self.pointChild = []
         self.childstate = []
@@ -22,10 +22,7 @@ class BestChess:
     def setBoard(self,board,state):
         for i in range(self.size):
             board[i][state[i]] = 1
-    # khoi tao state dau tien        
-    def randomInit(self):
-        self.state= list(range(self.size))
-        shuffle(self.state)
+
     # them state vao historystate
     def appendState(self,state):
         self.historystate.append(state)
@@ -39,9 +36,9 @@ class BestChess:
             for i,j in zip(range(row+1),state):
                 if self.boardArea[row][col] == self.boardArea[i][j] and row!=i :
                     hits += 1
-            for i in range(row-1,-1,-1):
-                if board[i][col] == 1:
-                    hits+=1
+            # for i in range(row-1,-1,-1):
+            #     if board[i][col] == 1:
+            #         hits+=1
             if  row>0 and col>0 and board[row-1][col-1] == 1:
                 hits+=1
             if row>0 and col<(self.size-1) and board[row-1][col+1] == 1:
@@ -66,10 +63,9 @@ class BestChess:
         self.childstate.clear()
    # Thuc hien giai thuat BestFS 
     def solve(self):
-        self.randomInit()
         self.appendState(self.state)
         if self.point(self.state) == 0:
-            self.solutions=self.state.copy()
+            self.solutions=self.state
             return self.solutions
         else:
             while self.point(self.state) != 0:
@@ -77,7 +73,7 @@ class BestChess:
                 self.getminstate()
                 self.appendState(self.state)
                 if self.point(self.state) == 0:
-                    self.solutions=self.state.copy()
+                    self.solutions=self.state
                     return self.solutions
             return None
         
@@ -128,6 +124,7 @@ class BestChess:
             s+="__"
         result.write(s)
         result.close()
+        print("Ket qua best first search: \n",s)
     # Giai quyet bai toan
     def reportbestfsSolverTime(self):
         from time import time
@@ -142,39 +139,3 @@ class BestChess:
         tracemalloc.stop()
         return a 
     
-# dimension = int(input("Enter board dimension: "))
-
-
-# if dimension == 5:
-#        boardA=random.choice(board5list)
-# elif dimension == 6:
-#        boardA=random.choice(board6list)
-# elif dimension == 8:
-#        boardA=random.choice(board8list)
-# print(boardA)
-# chess = BestChess(dimension,boardA,10)
-# solution = chess.reportbestfsSolverTime()
-# board = chess.createBoard(chess.size)
-# print("count:",chess.count)
-# print("Solution:")
-# print(solution)
-
-# for i in range(10):
-#     boardA=random.choice(board5list)
-#     chess = BestChess(5,boardA)
-#     solution = chess.reportbestfsSolverTime()
-
-# for i in range(10):
-#     boardA=random.choice(board6list)
-#     chess = BestChess(6,boardA)
-#     solution = chess.reportbestfsSolverTime()
-    
-# for i in range(10):
-#     boardA=random.choice(board8list)
-#     chess = BestChess(8,boardA)
-#     solution = chess.reportbestfsSolverTime()
-
-# boardA=board6list[1]
-# chess = BestChess(6,boardA)
-# solution = chess.reportbestfsSolverTime()
-# chess.write_to_file()
